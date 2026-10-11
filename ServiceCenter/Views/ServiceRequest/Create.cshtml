@@ -1,0 +1,49 @@
+@using ServiceCenter.Models
+@model ServiceRequest
+@{
+    ViewData["Title"] = "New request";
+}
+
+<a asp-action="Index" class="btn btn-link px-0 mb-3">&larr; Back to list</a>
+
+<div class="card">
+    <div class="card-header">
+        <h1 class="h5 mb-0">New service request</h1>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="RequesterName" class="form-label">Your name</label>
+                <input asp-for="RequesterName" class="form-control" />
+                <span asp-validation-for="RequesterName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Priority" class="form-label"></label>
+                <select asp-for="Priority" asp-items="Html.GetEnumSelectList<ServiceRequestPriority>()" class="form-select"></select>
+                <span asp-validation-for="Priority" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

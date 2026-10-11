@@ -1,0 +1,53 @@
+@using ServiceCenter.Models
+@model IEnumerable<ServiceRequest>
+@{
+    ViewData["Title"] = "Service requests";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Service requests</h1>
+    <a asp-action="Create" class="btn btn-primary">New request</a>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No requests yet.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        @foreach (var r in Model)
+        {
+            var statusClass = r.Status switch
+            {
+                ServiceRequestStatus.Unresolved => "bg-danger",
+                ServiceRequestStatus.InProgress => "bg-warning text-dark",
+                _ => "bg-success"
+            };
+            var priorityClass = r.Priority switch
+            {
+                ServiceRequestPriority.High => "bg-danger",
+                ServiceRequestPriority.Medium => "bg-primary",
+                _ => "bg-secondary"
+            };
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between">
+                        <span class="badge @statusClass">@r.Status</span>
+                        <span class="badge @priorityClass">@r.Priority priority</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@r.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">@r.RequesterName</h6>
+                        <p class="card-text text-truncate">@r.Description</p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-body-secondary">@r.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</small>
+                        <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
